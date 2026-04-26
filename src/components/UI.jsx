@@ -86,27 +86,64 @@ export function Select({ value, onChange, children, style }) {
 
 export function Modal({ title, onClose, children }) {
   return (
-    <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(15,20,50,0.35)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      zIndex: 100, backdropFilter: 'blur(4px)'
-    }} onClick={onClose}>
-      <div style={{
-        background: 'var(--bg2)', border: '1px solid var(--border)',
-        borderRadius: 12, padding: 32, width: '100%', maxWidth: 520,
-        maxHeight: '90vh', overflowY: 'auto', boxShadow: 'var(--shadow)'
-      }} onClick={e => e.stopPropagation()}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(15,20,50,0.35)",
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "center",
+        zIndex: 100,
+        backdropFilter: "blur(4px)",
+        overflowY: "auto",
+        padding: "40px 16px"
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          background: "var(--bg2)",
+          border: "1px solid var(--border)",
+          borderRadius: 12,
+          padding: 32,
+          width: "100%",
+          maxWidth: 520,
+          maxHeight: "90vh",
+          overflowY: "auto",
+          boxShadow: "var(--shadow)",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 24,
+          }}
+        >
           <h2 style={{ fontSize: 20 }}>{title}</h2>
-          <button onClick={onClose} style={{
-            background: 'var(--bg3)', border: '1px solid var(--border)', color: 'var(--text2)',
-            borderRadius: 8, width: 32, height: 32, fontSize: 18, cursor: 'pointer'
-          }}>×</button>
+          <button
+            onClick={onClose}
+            style={{
+              background: "var(--bg3)",
+              border: "1px solid var(--border)",
+              color: "var(--text2)",
+              borderRadius: 8,
+              width: 32,
+              height: 32,
+              fontSize: 18,
+              cursor: "pointer",
+            }}
+          >
+            ×
+          </button>
         </div>
         {children}
       </div>
     </div>
-  )
+  );
 }
 
 export function Toast({ message, type = 'success', onClose }) {
