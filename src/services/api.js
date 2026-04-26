@@ -1,5 +1,7 @@
 import axios from 'axios'
-const api = axios.create({ baseURL: '/api' })
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+});
 export const getPatients = (params) => api.get('/patients', { params })
 export const getPatient = (id) => api.get(`/patients/${id}`)
 export const createPatient = (data) => api.post('/patients', data)
