@@ -112,68 +112,180 @@ export default function Patients() {
   }
 
   return (
-    <div className="fade-in" style={{ padding: 32, maxWidth: 960 }}>
-      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+    <div
+      className="fade-in"
+      style={{ padding: 32, maxWidth: "100%", height: "100%" }}
+    >
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: 28,
+        }}
+      >
         <div>
           <h1 style={{ fontSize: 32, marginBottom: 4 }}>Patients</h1>
-          <p style={{ color: 'var(--text2)', fontSize: 14 }}>{pagination.total ?? 0} patient(s) enregistré(s)</p>
+          <p style={{ color: "var(--text2)", fontSize: 14 }}>
+            {pagination.total ?? 0} patient(s) enregistré(s)
+          </p>
         </div>
-        <Btn variant="primary" onClick={() => setModal('create')}>+ Nouveau patient</Btn>
+        <Btn variant="primary" onClick={() => setModal("create")}>
+          + Nouveau patient
+        </Btn>
       </div>
 
       {/* Search */}
       <div style={{ marginBottom: 20 }}>
         <input
           value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
+          onChange={(e) => setSearchInput(e.target.value)}
           placeholder="🔍  Rechercher par nom, prénom ou email…"
           style={{
-            width: '100%', background: 'var(--bg2)', border: '1px solid var(--border)',
-            borderRadius: 8, padding: '10px 16px', fontSize: 14, color: 'var(--text)',
+            width: "100%",
+            background: "var(--bg2)",
+            border: "1px solid var(--border)",
+            borderRadius: 8,
+            padding: "10px 16px",
+            fontSize: 14,
+            color: "var(--text)",
           }}
         />
       </div>
 
       {/* Table */}
-      {loading ? <Loader /> : patients.length === 0 ? (
+      {loading ? (
+        <Loader />
+      ) : patients.length === 0 ? (
         <Empty icon="👤" message="Aucun patient trouvé" />
       ) : (
-        <Card style={{ padding: 0, overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <Card style={{ padding: 0, overflow: "hidden" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid var(--border)', background: 'var(--bg3)' }}>
-                {['Nom', 'Email', 'Téléphone', 'Date de naissance', 'RDV', 'Actions'].map(h => (
-                  <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 12, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</th>
+              <tr
+                style={{
+                  borderBottom: "1px solid var(--border)",
+                  background: "var(--bg3)",
+                }}
+              >
+                {[
+                  "Nom",
+                  "Email",
+                  "Téléphone",
+                  "Date de naissance",
+                  "RDV",
+                  "Actions",
+                ].map((h) => (
+                  <th
+                    key={h}
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "left",
+                      fontSize: 12,
+                      color: "var(--text3)",
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    {h}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {patients.map((p, i) => (
-                <tr key={p.id} style={{ borderBottom: i < patients.length - 1 ? '1px solid var(--border)' : 'none', transition: 'background 0.1s' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg3)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                <tr
+                  key={p.id}
+                  style={{
+                    borderBottom:
+                      i < patients.length - 1
+                        ? "1px solid var(--border)"
+                        : "none",
+                    transition: "background 0.1s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background = "var(--bg3)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "transparent")
+                  }
                 >
-                  <td style={{ padding: '14px 16px' }}>
-                    <div style={{ fontWeight: 500 }}>{p.firstName} {p.lastName}</div>
-                    <div style={{ fontSize: 12, color: 'var(--text3)' }}>#{p.id}</div>
+                  <td style={{ padding: "14px 16px" }}>
+                    <div style={{ fontWeight: 500 }}>
+                      {p.firstName} {p.lastName}
+                    </div>
+                    <div style={{ fontSize: 12, color: "var(--text3)" }}>
+                      #{p.id}
+                    </div>
                   </td>
-                  <td style={{ padding: '14px 16px', color: 'var(--text2)', fontSize: 14 }}>{p.email}</td>
-                  <td style={{ padding: '14px 16px', color: 'var(--text2)', fontSize: 14 }}>{p.phone || '—'}</td>
-                  <td style={{ padding: '14px 16px', color: 'var(--text2)', fontSize: 14 }}>
-                    {p.dateOfBirth ? new Date(p.dateOfBirth).toLocaleDateString('fr-FR') : '—'}
+                  <td
+                    style={{
+                      padding: "14px 16px",
+                      color: "var(--text2)",
+                      fontSize: 14,
+                    }}
+                  >
+                    {p.email}
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
-                    <span style={{ background: 'rgba(79,156,249,0.1)', color: 'var(--accent)', borderRadius: 6, padding: '2px 10px', fontSize: 13 }}>
+                  <td
+                    style={{
+                      padding: "14px 16px",
+                      color: "var(--text2)",
+                      fontSize: 14,
+                    }}
+                  >
+                    {p.phone || "—"}
+                  </td>
+                  <td
+                    style={{
+                      padding: "14px 16px",
+                      color: "var(--text2)",
+                      fontSize: 14,
+                    }}
+                  >
+                    {p.dateOfBirth
+                      ? new Date(p.dateOfBirth).toLocaleDateString("fr-FR")
+                      : "—"}
+                  </td>
+                  <td style={{ padding: "14px 16px" }}>
+                    <span
+                      style={{
+                        background: "rgba(79,156,249,0.1)",
+                        color: "var(--accent)",
+                        borderRadius: 6,
+                        padding: "2px 10px",
+                        fontSize: 13,
+                      }}
+                    >
                       {p._count?.appointments ?? 0}
                     </span>
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
-                    <div style={{ display: 'flex', gap: 8 }}>
-                      <Btn size="sm" variant="ghost" onClick={() => setModal({ edit: p })}>✏️</Btn>
-                      <Btn size="sm" variant="danger" onClick={() => setModal({ delete: p })}>🗑️</Btn>
+                  <td style={{ padding: "14px 16px" }}>
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <Btn
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setModal({ edit: p })}
+                      >
+                        ✏️
+                      </Btn>
+                      <Btn
+                        size="sm"
+                        variant="danger"
+                        onClick={() => setModal({ delete: p })}
+                      >
+                        🗑️
+                      </Btn>
                     </div>
                   </td>
                 </tr>
@@ -185,19 +297,39 @@ export default function Patients() {
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 20 }}>
-          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(p => (
-            <button key={p} onClick={() => setPage(p)} style={{
-              width: 36, height: 36, borderRadius: 8, border: '1px solid var(--border)',
-              background: p === page ? 'var(--accent)' : 'var(--bg2)',
-              color: p === page ? '#fff' : 'var(--text2)', cursor: 'pointer', fontSize: 14
-            }}>{p}</button>
-          ))}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 8,
+            marginTop: 20,
+          }}
+        >
+          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
+            (p) => (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 8,
+                  border: "1px solid var(--border)",
+                  background: p === page ? "var(--accent)" : "var(--bg2)",
+                  color: p === page ? "#fff" : "var(--text2)",
+                  cursor: "pointer",
+                  fontSize: 14,
+                }}
+              >
+                {p}
+              </button>
+            ),
+          )}
         </div>
       )}
 
       {/* Modals */}
-      {modal === 'create' && (
+      {modal === "create" && (
         <Modal title="Nouveau patient" onClose={() => setModal(null)}>
           <PatientForm onSubmit={handleCreate} loading={saving} />
         </Modal>
@@ -210,8 +342,10 @@ export default function Patients() {
               firstName: modal.edit.firstName,
               lastName: modal.edit.lastName,
               email: modal.edit.email,
-              phone: modal.edit.phone || '',
-              dateOfBirth: modal.edit.dateOfBirth ? modal.edit.dateOfBirth.split('T')[0] : '',
+              phone: modal.edit.phone || "",
+              dateOfBirth: modal.edit.dateOfBirth
+                ? modal.edit.dateOfBirth.split("T")[0]
+                : "",
             }}
             onSubmit={handleUpdate}
             loading={saving}
@@ -221,19 +355,29 @@ export default function Patients() {
 
       {modal?.delete && (
         <Modal title="Supprimer le patient" onClose={() => setModal(null)}>
-          <div style={{ color: 'var(--text2)', marginBottom: 24, lineHeight: 1.7 }}>
-            Voulez-vous vraiment supprimer <strong style={{ color: 'var(--text)' }}>{modal.delete.firstName} {modal.delete.lastName}</strong> ?
+          <div
+            style={{ color: "var(--text2)", marginBottom: 24, lineHeight: 1.7 }}
+          >
+            Voulez-vous vraiment supprimer{" "}
+            <strong style={{ color: "var(--text)" }}>
+              {modal.delete.firstName} {modal.delete.lastName}
+            </strong>{" "}
+            ?
             <br />
-            <span style={{ color: 'var(--danger)', fontSize: 13 }}>⚠️ Tous ses rendez-vous seront également supprimés.</span>
+            <span style={{ color: "var(--danger)", fontSize: 13 }}>
+              ⚠️ Tous ses rendez-vous seront également supprimés.
+            </span>
           </div>
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-            <Btn variant="ghost" onClick={() => setModal(null)}>Annuler</Btn>
+          <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            <Btn variant="ghost" onClick={() => setModal(null)}>
+              Annuler
+            </Btn>
             <Btn variant="danger" onClick={handleDelete} disabled={saving}>
-              {saving ? 'Suppression…' : 'Supprimer'}
+              {saving ? "Suppression…" : "Supprimer"}
             </Btn>
           </div>
         </Modal>
       )}
     </div>
-  )
+  );
 }

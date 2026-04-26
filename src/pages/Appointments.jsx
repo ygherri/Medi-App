@@ -133,51 +133,168 @@ export default function Appointments() {
   }
 
   return (
-    <div className="fade-in" style={{ padding: 32, maxWidth: 1000 }}>
-      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+    <div
+      className="fade-in"
+      style={{ padding: 32, maxWidth: "100%", height: "100%" }}
+    >
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: 28,
+        }}
+      >
         <div>
           <h1 style={{ fontSize: 32, marginBottom: 4 }}>Rendez-vous</h1>
-          <p style={{ color: 'var(--text2)', fontSize: 14 }}>{pagination.total ?? 0} rendez-vous au total</p>
+          <p style={{ color: "var(--text2)", fontSize: 14 }}>
+            {pagination.total ?? 0} rendez-vous au total
+          </p>
         </div>
-        <Btn variant="primary" onClick={() => setModal('create')}>+ Nouveau RDV</Btn>
+        <Btn variant="primary" onClick={() => setModal("create")}>
+          + Nouveau RDV
+        </Btn>
       </div>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
-        <Select value={filters.status} onChange={setFilter('status')} style={{ width: 180 }}>
+      <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+        <Select
+          value={filters.status}
+          onChange={setFilter("status")}
+          style={{ width: 180 }}
+        >
           <option value="">Tous les statuts</option>
           <option value="SCHEDULED">Planifié</option>
           <option value="CONFIRMED">Confirmé</option>
           <option value="CANCELLED">Annulé</option>
           <option value="COMPLETED">Effectué</option>
         </Select>
-        <input value={filters.doctorName} onChange={setFilter('doctorName')} placeholder="🔍  Filtrer par médecin…"
-          style={{ flex: 1, background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 8, padding: '9px 14px', fontSize: 14, color: 'var(--text)' }}
+        <input
+          value={filters.doctorName}
+          onChange={setFilter("doctorName")}
+          placeholder="🔍  Filtrer par médecin…"
+          style={{
+            flex: 1,
+            background: "var(--bg2)",
+            border: "1px solid var(--border)",
+            borderRadius: 8,
+            padding: "9px 14px",
+            fontSize: 14,
+            color: "var(--text)",
+          }}
         />
       </div>
 
-      {loading ? <Loader /> : appointments.length === 0 ? <Empty icon="📅" message="Aucun rendez-vous trouvé" /> : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {appointments.map(a => (
-            <Card key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px' }}>
-              <div style={{ width: 56, height: 56, borderRadius: 12, background: 'var(--bg3)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: '1px solid var(--border)' }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--accent)', lineHeight: 1 }}>{new Date(a.startTime).getDate()}</span>
-                <span style={{ fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase' }}>{new Date(a.startTime).toLocaleDateString('fr-FR', { month: 'short' })}</span>
+      {loading ? (
+        <Loader />
+      ) : appointments.length === 0 ? (
+        <Empty icon="📅" message="Aucun rendez-vous trouvé" />
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {appointments.map((a) => (
+            <Card
+              key={a.id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                padding: "16px 20px",
+              }}
+            >
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: 12,
+                  background: "var(--bg3)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    color: "var(--accent)",
+                    lineHeight: 1,
+                  }}
+                >
+                  {new Date(a.startTime).getDate()}
+                </span>
+                <span
+                  style={{
+                    fontSize: 10,
+                    color: "var(--text3)",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {new Date(a.startTime).toLocaleDateString("fr-FR", {
+                    month: "short",
+                  })}
+                </span>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-                  <span style={{ fontWeight: 600, fontSize: 15 }}>{a.patient ? `${a.patient.firstName} ${a.patient.lastName}` : `Patient #${a.patientId}`}</span>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    marginBottom: 3,
+                  }}
+                >
+                  <span style={{ fontWeight: 600, fontSize: 15 }}>
+                    {a.patient
+                      ? `${a.patient.firstName} ${a.patient.lastName}`
+                      : `Patient #${a.patientId}`}
+                  </span>
                   <Badge status={a.status} />
                 </div>
-                <div style={{ fontSize: 13, color: 'var(--text2)' }}>
-                  <span style={{ color: 'var(--accent2)' }}>{a.doctorName}</span>
-                  {' · '}{formatDate(a.startTime)}{' · '}{formatTime(a.startTime)} – {formatTime(a.endTime)}
+                <div style={{ fontSize: 13, color: "var(--text2)" }}>
+                  <span style={{ color: "var(--accent2)" }}>
+                    {a.doctorName}
+                  </span>
+                  {" · "}
+                  {formatDate(a.startTime)}
+                  {" · "}
+                  {formatTime(a.startTime)} – {formatTime(a.endTime)}
                 </div>
-                {a.reason && <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 2 }}>{a.reason}</div>}
+                {a.reason && (
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "var(--text3)",
+                      marginTop: 2,
+                    }}
+                  >
+                    {a.reason}
+                  </div>
+                )}
               </div>
-              <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-                <Btn size="sm" variant="ghost" onClick={() => setModal({ edit: a })}>✏️</Btn>
-                <Btn size="sm" variant="danger" onClick={() => setModal({ delete: a })}>🗑️</Btn>
+              <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
+                <Btn
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setModal({ edit: a })}
+                >
+                  ✏️
+                </Btn>
+                <Btn
+                  size="sm"
+                  variant="danger"
+                  onClick={() => setModal({ delete: a })}
+                >
+                  🗑️
+                </Btn>
               </div>
             </Card>
           ))}
@@ -185,37 +302,96 @@ export default function Appointments() {
       )}
 
       {pagination.totalPages > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 20 }}>
-          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(p => (
-            <button key={p} onClick={() => setPage(p)} style={{ width: 36, height: 36, borderRadius: 8, border: '1px solid var(--border)', background: p === page ? 'var(--accent)' : 'var(--bg2)', color: p === page ? '#fff' : 'var(--text2)', cursor: 'pointer', fontSize: 14 }}>{p}</button>
-          ))}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 8,
+            marginTop: 20,
+          }}
+        >
+          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
+            (p) => (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 8,
+                  border: "1px solid var(--border)",
+                  background: p === page ? "var(--accent)" : "var(--bg2)",
+                  color: p === page ? "#fff" : "var(--text2)",
+                  cursor: "pointer",
+                  fontSize: 14,
+                }}
+              >
+                {p}
+              </button>
+            ),
+          )}
         </div>
       )}
 
-      {modal === 'create' && (
+      {modal === "create" && (
         <Modal title="Nouveau rendez-vous" onClose={() => setModal(null)}>
-          <AppointmentForm patients={patients} onSubmit={handleCreate} loading={saving} submitLabel="Créer le RDV" />
+          <AppointmentForm
+            patients={patients}
+            onSubmit={handleCreate}
+            loading={saving}
+            submitLabel="Créer le RDV"
+          />
         </Modal>
       )}
 
       {modal?.edit && (
         <Modal title="Modifier le rendez-vous" onClose={() => setModal(null)}>
-          <AppointmentForm patients={patients} initial={{ patientId: String(modal.edit.patientId), doctorName: modal.edit.doctorName, reason: modal.edit.reason || '', startTime: toDatetimeLocal(modal.edit.startTime), endTime: toDatetimeLocal(modal.edit.endTime), status: modal.edit.status, notes: modal.edit.notes || '' }} onSubmit={handleUpdate} loading={saving} />
+          <AppointmentForm
+            patients={patients}
+            initial={{
+              patientId: String(modal.edit.patientId),
+              doctorName: modal.edit.doctorName,
+              reason: modal.edit.reason || "",
+              startTime: toDatetimeLocal(modal.edit.startTime),
+              endTime: toDatetimeLocal(modal.edit.endTime),
+              status: modal.edit.status,
+              notes: modal.edit.notes || "",
+            }}
+            onSubmit={handleUpdate}
+            loading={saving}
+          />
         </Modal>
       )}
 
       {modal?.delete && (
         <Modal title="Supprimer le rendez-vous" onClose={() => setModal(null)}>
-          <div style={{ color: 'var(--text2)', marginBottom: 24, lineHeight: 1.8 }}>
-            Supprimer le rendez-vous du <strong style={{ color: 'var(--text)' }}>{formatDate(modal.delete.startTime)}</strong> avec <strong style={{ color: 'var(--text)' }}>{modal.delete.doctorName}</strong> ?
-            <br /><span style={{ fontSize: 13, color: 'var(--danger)' }}>⚠️ Cette action est irréversible.</span>
+          <div
+            style={{ color: "var(--text2)", marginBottom: 24, lineHeight: 1.8 }}
+          >
+            Supprimer le rendez-vous du{" "}
+            <strong style={{ color: "var(--text)" }}>
+              {formatDate(modal.delete.startTime)}
+            </strong>{" "}
+            avec{" "}
+            <strong style={{ color: "var(--text)" }}>
+              {modal.delete.doctorName}
+            </strong>{" "}
+            ?
+            <br />
+            <span style={{ fontSize: 13, color: "var(--danger)" }}>
+              ⚠️ Cette action est irréversible.
+            </span>
           </div>
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-            <Btn variant="ghost" onClick={() => setModal(null)}>Annuler</Btn>
-            <Btn variant="danger" onClick={handleDelete} disabled={saving}>{saving ? 'Suppression…' : 'Supprimer'}</Btn>
+          <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+            <Btn variant="ghost" onClick={() => setModal(null)}>
+              Annuler
+            </Btn>
+            <Btn variant="danger" onClick={handleDelete} disabled={saving}>
+              {saving ? "Suppression…" : "Supprimer"}
+            </Btn>
           </div>
         </Modal>
       )}
     </div>
-  )
+  );
 }

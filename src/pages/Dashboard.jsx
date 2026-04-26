@@ -42,34 +42,147 @@ export default function Dashboard() {
   if (loading) return <Loader />
 
   return (
-    <div className="fade-in" style={{ padding: 32, maxWidth: 960 }}>
+    <div
+      className="fade-in"
+      style={{ padding: 32, maxWidth: "100%", height: "100%" }}
+    >
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 32, marginBottom: 6 }}>Dashboard</h1>
-        <p style={{ color: 'var(--text2)', fontSize: 14 }}>{new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+        <p style={{ color: "var(--text2)", fontSize: 14 }}>
+          {new Date().toLocaleDateString("fr-FR", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+        </p>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16, marginBottom: 40 }}>
-        <StatCard icon="👤" label="Patients total" value={stats?.totalPatients ?? 0} color="var(--accent)" to="/patients" />
-        <StatCard icon="📅" label="Rendez-vous total" value={stats?.totalAppts ?? 0} color="var(--accent2)" to="/appointments" />
-        <StatCard icon="🕐" label="Aujourd'hui" value={stats?.today ?? 0} color="var(--accent3)" />
-        <StatCard icon="⏳" label="À venir" value={stats?.upcoming ?? 0} color="#a78bfa" />
-        <StatCard icon="✅" label="Effectués" value={stats?.completed ?? 0} color="var(--accent2)" />
-        <StatCard icon="❌" label="Annulés" value={stats?.cancelled ?? 0} color="var(--danger)" />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+          gap: 16,
+          marginBottom: 40,
+        }}
+      >
+        <StatCard
+          icon="👤"
+          label="Patients total"
+          value={stats?.totalPatients ?? 0}
+          color="var(--accent)"
+          to="/patients"
+        />
+        <StatCard
+          icon="📅"
+          label="Rendez-vous total"
+          value={stats?.totalAppts ?? 0}
+          color="var(--accent2)"
+          to="/appointments"
+        />
+        <StatCard
+          icon="🕐"
+          label="Aujourd'hui"
+          value={stats?.today ?? 0}
+          color="var(--accent3)"
+        />
+        <StatCard
+          icon="⏳"
+          label="À venir"
+          value={stats?.upcoming ?? 0}
+          color="#a78bfa"
+        />
+        <StatCard
+          icon="✅"
+          label="Effectués"
+          value={stats?.completed ?? 0}
+          color="var(--accent2)"
+        />
+        <StatCard
+          icon="❌"
+          label="Annulés"
+          value={stats?.cancelled ?? 0}
+          color="var(--danger)"
+        />
       </div>
       <h2 style={{ fontSize: 22, marginBottom: 16 }}>Prochains rendez-vous</h2>
       {upcoming.length === 0 ? (
-        <Card><p style={{ color: 'var(--text3)', textAlign: 'center', padding: 24 }}>Aucun rendez-vous à venir</p></Card>
+        <Card>
+          <p
+            style={{ color: "var(--text3)", textAlign: "center", padding: 24 }}
+          >
+            Aucun rendez-vous à venir
+          </p>
+        </Card>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {upcoming.map(a => (
-            <Card key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px' }}>
-              <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--bg3)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--accent)', lineHeight: 1 }}>{new Date(a.startTime).getDate()}</span>
-                <span style={{ fontSize: 10, color: 'var(--text3)' }}>{new Date(a.startTime).toLocaleDateString('fr-FR', { month: 'short' }).toUpperCase()}</span>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {upcoming.map((a) => (
+            <Card
+              key={a.id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                padding: "16px 20px",
+              }}
+            >
+              <div
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 12,
+                  background: "var(--bg3)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: "var(--accent)",
+                    lineHeight: 1,
+                  }}
+                >
+                  {new Date(a.startTime).getDate()}
+                </span>
+                <span style={{ fontSize: 10, color: "var(--text3)" }}>
+                  {new Date(a.startTime)
+                    .toLocaleDateString("fr-FR", { month: "short" })
+                    .toUpperCase()}
+                </span>
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 500 }}>{a.patient ? `${a.patient.firstName} ${a.patient.lastName}` : `Patient #${a.patientId}`}</div>
-                <div style={{ fontSize: 13, color: 'var(--text2)' }}>{a.doctorName} · {new Date(a.startTime).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })} – {new Date(a.endTime).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</div>
-                {a.reason && <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 2 }}>{a.reason}</div>}
+                <div style={{ fontWeight: 500 }}>
+                  {a.patient
+                    ? `${a.patient.firstName} ${a.patient.lastName}`
+                    : `Patient #${a.patientId}`}
+                </div>
+                <div style={{ fontSize: 13, color: "var(--text2)" }}>
+                  {a.doctorName} ·{" "}
+                  {new Date(a.startTime).toLocaleTimeString("fr-FR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}{" "}
+                  –{" "}
+                  {new Date(a.endTime).toLocaleTimeString("fr-FR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </div>
+                {a.reason && (
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "var(--text3)",
+                      marginTop: 2,
+                    }}
+                  >
+                    {a.reason}
+                  </div>
+                )}
               </div>
               <Badge status={a.status} />
             </Card>
@@ -77,5 +190,5 @@ export default function Dashboard() {
         </div>
       )}
     </div>
-  )
+  );
 }
